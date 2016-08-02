@@ -1,0 +1,18 @@
+--- source/Vector2.cpp	
++++ source/Vector2.cpp	
+@@ -180,13 +180,12 @@
+ 	x = (x * (1 - a_value)) + (destination.x * a_value);
+ 	y = (y * (1 - a_value)) + (destination.y * a_value);
+ }
+-
++#include <iostream>
+ Vector2 Vector2::Slerp(const Vector2& destination, const float& a_value)const
+ {
+ 	float omega = (float)acos(DotProd(Vector2(this), destination));
+-	return (Vector2(this) * ((float)(sin(1 - a_value)*omega) / (float)sin(omega)) + destination * ((float)sin(a_value * omega)) / (float)sin(omega));
++	return (Vector2(x, y) * ((float)(sin(1 - a_value)*omega) / (float)sin(omega)) + destination * ((float)sin(a_value * omega)) / (float)sin(omega));
+ }
+-
+ void Vector2::Slerp(const Vector2& destination, const float& a_value)
+ {
+ 	float omega = (float)cos(DotProd(Vector2(this), destination));
