@@ -626,8 +626,8 @@ namespace Maths {
 
 		Matrix4 m4;
 
-		m4.values_[0] = c;  m4.values_[1] = s;   m4.values_[2] = 0;  m4.values_[3] = 0;
-		m4.values_[4] = -s; m4.values_[5] = c;   m4.values_[6] = 0;  m4.values_[7] = 0;
+		m4.values_[0] = c;  m4.values_[1] = -s;   m4.values_[2] = 0;  m4.values_[3] = 0;
+		m4.values_[4] = s; m4.values_[5] = c;   m4.values_[6] = 0;  m4.values_[7] = 0;
 		m4.values_[8] = 0;  m4.values_[9] = 0;   m4.values_[10] = 1; m4.values_[11] = 0;
 		m4.values_[12] = 0; m4.values_[13] = 0;  m4.values_[14] = 0; m4.values_[15] = 1;
 
@@ -644,6 +644,17 @@ namespace Maths {
 	{
 		Vector4 v4 = GetY();
 		Translate(Vector2(v4.x, v4.y) * -a_f);
+	}
+
+	void Matrix4::SetPosition2D(const Vector2 & a_v2Pos)
+	{
+		values_[12] = a_v2Pos.x;
+		values_[13] = a_v2Pos.y;
+	}
+
+	Vector2 Matrix4::GetPosition2D() const
+	{
+		return Vector2(values_[12], values_[13]);
 	}
 
 	Matrix4 Matrix4::ConstructCameraView(const Vector3& vecPosition, const Vector3& vecDirection, const Vector3& vecUp) const
