@@ -2,6 +2,7 @@
 #include "AABBCollider2D.h"
 #include "Vector2.h"
 #include "WallCollider2D.h"
+#include <iostream>
 namespace Maths
 {
 	AABBCollisionManager2D *AABBCollisionManager2D::s_instance = 0;
@@ -33,8 +34,10 @@ namespace Maths
 				{
 					if (pNonStaticCollider->AABBvsAABB(*pCollider))
 					{
+						std::cout << pNonStaticCollider->GetName() << " has collided with " << pCollider->GetName() << std::endl;
+
 						//a nonstatic has collided with a collider
-						float distanceToNearestWall = ULLONG_MAX;
+						float distanceToNearestWall = (float)ULLONG_MAX;
 						int iClosest = -1;
 
 						for (unsigned int i = 0; i < 4; i++)

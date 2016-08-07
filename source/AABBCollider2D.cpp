@@ -4,7 +4,7 @@
 
 namespace Maths
 {
-	AABBCollider2D::AABBCollider2D(const bool a_isStatic)
+	AABBCollider2D::AABBCollider2D(const char* a_name, const bool a_isStatic)
 	{
 		left_ = new WallCollider2D();
 		top_ = new WallCollider2D();
@@ -14,22 +14,23 @@ namespace Maths
 		size_ = new Vector2();
 		halfSize_ = new Vector2();
 		isStatic_ = a_isStatic;
+		name_ = a_name;
 		AABBCollisionManager2D::instance()->Add(*this);
 	}
 
-	AABBCollider2D::AABBCollider2D(const Vector2& a_pos, const Vector2& a_size, const bool a_isStatic)
+	AABBCollider2D::AABBCollider2D(const char* a_name, const Vector2& a_pos, const Vector2& a_size, const bool a_isStatic)
 	{
 		//Setting the start and size vectors
 		pos_ = new Vector2(a_pos);
 		size_ = new Vector2(a_size);
 
 		//Calculating the halfsize of the collider
-		halfSize_ = new Vector2(*size_ * 0.5f);
+		halfSize_ = size_ * 0.5f;
 
 		//Calculating the position of the four corners, we can use the x's and y's of points already calculated to save processor cycles ;)
-		Vector2 botleft = a_pos - *halfSize_;
-		Vector2 topleft = Vector2(botleft.x, pos_->y + halfSize_->y);
-		Vector2 topright = Vector2(pos_->x + halfSize_->x, topleft.y);
+		Vector2 botleft = a_pos - halfSize_;
+		Vector2 topleft = Vector2(botleft.x, pos_.y + halfSize_.y);
+		Vector2 topright = Vector2(pos_.x + halfSize_.x, topleft.y);
 		Vector2 botright = Vector2(topright.x, botleft.y);
 
 		//Calculating the four walls
@@ -40,6 +41,9 @@ namespace Maths
 
 		//Set the isStatic value
 		isStatic_ = a_isStatic;
+
+		//Set the name
+		name_ = a_name;
 		AABBCollisionManager2D::instance()->Add(*this);
 	}
 
@@ -51,9 +55,6 @@ namespace Maths
 		delete top_;
 		delete right_;
 		delete bottom_;
-		delete pos_;
-		delete size_;
-		delete halfSize_;
 	}
 
 	WallCollider2D* AABBCollider2D::GetWall(const WallsEnum a_wall)
@@ -68,13 +69,13 @@ namespace Maths
 
 	bool AABBCollider2D::EncapsulatesPosition(const Vector2& a_point)const
 	{
-		if (a_point.x < pos_->x - halfSize_->x)
+		if (a_point.x < pos_.x - halfSize_.x)
 			return false;
-		if (a_point.x > pos_->x + halfSize_->x)
+		if (a_point.x > pos_.x + halfSize_.x)
 			return false;
-		if (a_point.y < pos_->y - halfSize_->y)
+		if (a_point.y < pos_.y - halfSize_.y)
 			return false;
-		if (a_point.y > pos_->y + halfSize_->y)
+		if (a_point.y > pos_.y + halfSize_.y)
 			return false;
 		return true;
 	}
@@ -91,13 +92,13 @@ namespace Maths
 
 	bool AABBCollider2D::AABBvsAABB(const AABBCollider2D& a_other) const
 	{
-		if (a_other.pos_->x - a_other.halfSize_->x > pos_->x + halfSize_->x)
+		if (a_other.pos_.x - a_other.halfSize_.x > pos_.x + halfSize_.x)
 			return false;
-		if (a_other.pos_->x + a_other.halfSize_->x < pos_->x - halfSize_->x)
+		if (a_other.pos_.x + a_other.halfSize_.x < pos_.x - halfSize_.x)
 			return false;
-		if (a_other.pos_->y - a_other.halfSize_->y > pos_->y + halfSize_->y)
+		if (a_other.pos_.y - a_other.halfSize_.y > pos_.y + halfSize_.y)
 			return false;
-		if (a_other.pos_->y + a_other.halfSize_->y < pos_->y - halfSize_->y)
+		if (a_other.pos_.y + a_other.halfSize_.y < pos_.y - halfSize_.y)
 			return false;
 		return true;
 	}
@@ -114,7 +115,7 @@ namespace Maths
 
 	void AABBCollider2D::SetSize(const Vector2 & a_v2Size)
 	{
-		size_ = &Maths::Vector2(a_v2Size);
+		size_ = a_v2Size;
 	}
 
 	void AABBCollider2D::SetPos(Vector2& a_v2Pos)
@@ -125,5 +126,13 @@ namespace Maths
 	Vector2 AABBCollider2D::GetPos() const
 	{
 		return pos_;
+	}
+	const char * AABBCollider2D::GetName() const
+	{
+		return name_;
+	}
+	void AABBCollider2D::SetName(const char* a_name)
+	{
+		name_ = a_name;
 	}
 }

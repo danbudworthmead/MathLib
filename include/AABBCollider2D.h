@@ -1,13 +1,16 @@
 #ifndef __AABB_COLLIDER_2D_H_
 #define __AABB_COLLIDER_2D_H_
 #pragma warning(disable : 4201)
-#include "mathLib.h"
+#include "Vector2.h"
+//#include "mathLib.h"
 namespace Maths
 {
-	class Vector2;
 	class WallCollider2D;
 	class DLLEXPORT AABBCollider2D
 	{
+		Vector2 pos_;
+		Vector2 size_;
+		Vector2 halfSize_;
 		union
 		{
 			struct
@@ -22,13 +25,12 @@ namespace Maths
 				WallCollider2D* walls_[4];
 			};
 		};
-		Vector2* pos_;
-		Vector2* size_;
-		Vector2* halfSize_;
 		bool isStatic_;
+
+		const char* name_;
 	public:
-		AABBCollider2D(const bool a_isStatic = true);
-		AABBCollider2D(const Vector2& a_pos, const Vector2& a_size, const bool a_isStatic = true);
+		AABBCollider2D(const char* a_name, const bool a_isStatic = true);
+		AABBCollider2D(const char* a_name, const Vector2& a_pos, const Vector2& a_size, const bool a_isStatic = true);
 		~AABBCollider2D();
 		//Left = 0, Top = 1, Right = 2, Bottom = 3
 		enum class WallsEnum
@@ -47,6 +49,9 @@ namespace Maths
 		void SetSize(const Vector2& a_v2Size);
 		void SetPos(Vector2& a_v2Pos);
 		Vector2 GetPos()const;
+
+		const char* GetName()const;
+		void SetName(const char* a_name);
 	};
 }
 #endif //__AABB_COLLIDER_2D_H_
