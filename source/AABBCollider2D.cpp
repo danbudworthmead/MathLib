@@ -1,5 +1,6 @@
 #include "AABBCollider2D.h"
 #include "WallCollider2D.h"
+#include "AABBCollisionManager2D.h"
 #include "Vector2.h"
 
 namespace Maths
@@ -27,17 +28,8 @@ namespace Maths
 		//Calculating the halfsize of the collider
 		halfSize_ = size_ * 0.5f;
 
-		//Calculating the position of the four corners, we can use the x's and y's of points already calculated to save processor cycles ;)
-		Vector2 botleft = a_pos - halfSize_;
-		Vector2 topleft = Vector2(botleft.x, pos_.y + halfSize_.y);
-		Vector2 topright = Vector2(pos_.x + halfSize_.x, topleft.y);
-		Vector2 botright = Vector2(topright.x, botleft.y);
-
-		//Calculating the four walls
-		left_ = new WallCollider2D(botleft, topleft);
-		top_ = new WallCollider2D(topleft, topright);
-		right_ = new WallCollider2D(topright, botright);
-		bottom_ = new WallCollider2D(botright, botleft);
+		//Update the walls
+		UpdateWalls();
 
 		//Set the isStatic value
 		isStatic_ = a_isStatic;
@@ -116,16 +108,33 @@ namespace Maths
 	void AABBCollider2D::SetSize(const Vector2 & a_v2Size)
 	{
 		size_ = a_v2Size;
+		halfSize_ = a_v2Size * 0.5f;
+		UpdateWalls();
 	}
 
 	void AABBCollider2D::SetPos(Vector2& a_v2Pos)
 	{
-		pos_ = &a_v2Pos;
+		pos_ = a_v2Pos;
+		UpdateWalls();
 	}
 
 	Vector2 AABBCollider2D::GetPos() const
 	{
 		return pos_;
+	}
+	void AABBCollider2D::UpdateWalls()
+	{
+		//Calculating the position of the four corners, we can use the x's and y's of points already calculated to save processor cycles ;)
+		Vector2 botleft = pos_ - halfSize_;
+		Vector2 topleft = Vector2(botleft.x, pos_.y + halfSize_.y);
+		Vector2 topright = Vector2(pos_.x + halfSize_.x, topleft.y);
+		Vector2 botright = Vector2(topright.x, botleft.y);
+
+		//Calculating the four walls
+		left_	= &WallCollider2D(botleft, topleft);
+		top_	= &WallCollider2D(topleft, topright);
+		right_	= &WallCollider2D(topright, botright);
+		bottom_ = &WallCollider2D(botright, botleft);
 	}
 	const char * AABBCollider2D::GetName() const
 	{
@@ -134,5 +143,16 @@ namespace Maths
 	void AABBCollider2D::SetName(const char* a_name)
 	{
 		name_ = a_name;
+	}
+	void AABBCollider2D::GetCorners2D(float a_values[8])
+	{
+		a_values[0] = left_->GetStart().x;
+		a_values[1] = left_->GetStart().y;
+		a_values[2] = top_->GetStart().x;
+		a_values[3] = top_->GetStart().y;
+		a_values[4] = right_->GetStart().x;
+		a_values[5] = right_->GetStart().y;
+		a_values[6] = bottom_->GetStart().x;
+		a_values[7] = bottom_->GetStart().y;
 	}
 }

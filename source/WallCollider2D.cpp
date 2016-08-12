@@ -14,6 +14,7 @@ namespace Maths
 		start_ = new Vector2(a_start);
 		end_ = new Vector2(a_end);
 		normal_ = new Vector2((a_end - a_start).PerpCCW());
+		normal_->Normalise();
 	}
 
 	WallCollider2D::~WallCollider2D()
@@ -33,8 +34,18 @@ namespace Maths
 		return normal_;
 	}
 
+	Vector2 WallCollider2D::GetStart() const
+	{
+		return start_;
+	}
+
+	Vector2 WallCollider2D::GetEnd() const
+	{
+		return end_;
+	}
+
 	float DistanceToWall(const WallCollider2D& wall, const Vector2& v2)
 	{
-		return DotProd(v2 - wall.start_, wall.normal_);
+		return DotProd(v2 - wall.start_, wall.normal_/*->GetNormalised()*/);
 	}
 }

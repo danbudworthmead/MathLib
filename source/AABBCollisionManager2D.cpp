@@ -24,17 +24,18 @@ namespace Maths
 		return s_instance;
 	}
 
-	void AABBCollisionManager2D::UpdatePhysics()
+	void AABBCollisionManager2D::UpdatePhysics(const bool DEBUG_MODE)
 	{
-		for (auto pNonStaticCollider : nonStaticColliders_)
+		for (auto pNonStaticCollider : nonStaticColliders)
 		{
-			for (auto pCollider : colliders_)
+			for (auto pCollider : colliders)
 			{
 				if (pNonStaticCollider != pCollider)
 				{
 					if (pNonStaticCollider->AABBvsAABB(*pCollider))
 					{
-						std::cout << pNonStaticCollider->GetName() << " has collided with " << pCollider->GetName() << std::endl;
+						if (DEBUG_MODE)
+							std::cout << pNonStaticCollider->GetName() << " has collided with " << pCollider->GetName() << std::endl;
 
 						//a nonstatic has collided with a collider
 						float distanceToNearestWall = (float)ULLONG_MAX;
@@ -51,10 +52,11 @@ namespace Maths
 						}
 
 						if (iClosest == 0 || iClosest == 2)
-							return pNonStaticCollider->SetPos(pNonStaticCollider->GetPos() + pCollider->GetWall(iClosest)->GetNormal() * (distanceToNearestWall + pCollider->GetHalfSize().x));
+							return pNonStaticCollider->SetPos(pNonStaticCollider->GetPos() - pCollider->GetWall(iClosest)->GetNormal() * (distanceToNearestWall + pNonStaticCollider->GetHalfSize().x));
 						if (iClosest == 1 || iClosest == 3)
-							return pNonStaticCollider->SetPos(pNonStaticCollider->GetPos() + pCollider->GetWall(iClosest)->GetNormal() * (distanceToNearestWall + pCollider->GetHalfSize().y));
-
+							return pNonStaticCollider->SetPos(pNonStaticCollider->GetPos() - pCollider->GetWall(iClosest)->GetNormal() * (distanceToNearestWall + pNonStaticCollider->GetHalfSize().y));
+						
+						std::cout << distanceToNearestWall << std::endl;
 					}
 				}
 			}
@@ -63,35 +65,35 @@ namespace Maths
 
 	int AABBCollisionManager2D::Add(AABBCollider2D& a_collider)
 	{
-		for (std::vector<AABBCollider2D*>::iterator iter = colliders_.begin(); iter != colliders_.end(); ++iter)
+		for (std::vector<AABBCollider2D*>::iterator iter = colliders.begin(); iter != colliders.end(); ++iter)
 		{
 			if (*iter == &a_collider)
 			{
-				return iter - colliders_.begin();
+				return iter - colliders.begin();
 			}
 		}
-		colliders_.push_back(&a_collider);
+		colliders.push_back(&a_collider);
 		if (!a_collider.IsStatic())
 		{
-			nonStaticColliders_.push_back(&a_collider);
+			nonStaticColliders.push_back(&a_collider);
 		}
-		return colliders_.size() - 1;
+		return colliders.size() - 1;
 	}
 
 	bool AABBCollisionManager2D::Remove(AABBCollider2D& a_collider)
 	{
-		for (std::vector<AABBCollider2D*>::iterator iter = colliders_.begin(); iter != colliders_.end(); ++iter)
+		for (std::vector<AABBCollider2D*>::iterator iter = colliders.begin(); iter != colliders.end(); ++iter)
 		{
 			if (*iter == &a_collider)
 			{
-				colliders_.erase(iter);
+				colliders.erase(iter);
 				if (!a_collider.IsStatic())
 				{
-					for (std::vector<AABBCollider2D*>::iterator iter2 = nonStaticColliders_.begin(); iter2 != nonStaticColliders_.end(); ++iter2)
+					for (std::vector<AABBCollider2D*>::iterator iter2 = nonStaticColliders.begin(); iter2 != nonStaticColliders.end(); ++iter2)
 					{
 						if (*iter2 == &a_collider)
 						{
-							nonStaticColliders_.erase(iter2);
+							nonStaticColliders.erase(iter2);
 							return true;
 						}
 					}
@@ -104,31 +106,31 @@ namespace Maths
 
 	int AABBCollisionManager2D::Size() const
 	{
-		return colliders_.size();
+		return colliders.size();
 	}
 
 	int AABBCollisionManager2D::SizeNonStatic() const
 	{
-		return nonStaticColliders_.size();
+		return nonStaticColliders.size();
 	}
 
 	AABBCollider2D* AABBCollisionManager2D::ReturnAtIndexStatic(const int a_index)
 	{
-		return colliders_[a_index];
+		return colliders[a_index];
 	}
 
 	AABBCollider2D* AABBCollisionManager2D::ReturnAtIndexNonStatic(const int a_index)
 	{
-		return nonStaticColliders_[a_index];
+		return nonStaticColliders[a_index];
 	}
 
 	int AABBCollisionManager2D::FindStatic(const AABBCollider2D& a_AABB)
 	{
-		for (std::vector<AABBCollider2D*>::iterator iter = colliders_.begin(); iter != colliders_.end(); ++iter)
+		for (std::vector<AABBCollider2D*>::iterator iter = colliders.begin(); iter != colliders.end(); ++iter)
 		{
 			if (*iter == &a_AABB)
 			{
-				return iter - colliders_.begin();
+				return iter - colliders.begin();
 			}
 		}
 		return -1;
@@ -136,11 +138,11 @@ namespace Maths
 
 	int AABBCollisionManager2D::FindNonStatic(const AABBCollider2D& a_AABB)
 	{
-		for (std::vector<AABBCollider2D*>::iterator iter = nonStaticColliders_.begin(); iter != nonStaticColliders_.end(); ++iter)
+		for (std::vector<AABBCollider2D*>::iterator iter = nonStaticColliders.begin(); iter != nonStaticColliders.end(); ++iter)
 		{
 			if (*iter == &a_AABB)
 			{
-				return iter - nonStaticColliders_.begin();
+				return iter - nonStaticColliders.begin();
 			}
 		}
 		return -1;

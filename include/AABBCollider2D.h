@@ -1,8 +1,7 @@
 #ifndef __AABB_COLLIDER_2D_H_
 #define __AABB_COLLIDER_2D_H_
 #pragma warning(disable : 4201)
-#include "Vector2.h"
-//#include "mathLib.h"
+#include "mathLib.h"
 namespace Maths
 {
 	class WallCollider2D;
@@ -50,8 +49,12 @@ namespace Maths
 		void SetPos(Vector2& a_v2Pos);
 		Vector2 GetPos()const;
 
+		void UpdateWalls();
+
 		const char* GetName()const;
 		void SetName(const char* a_name);
+
+		void GetCorners2D(float a_values[8]);
 	};
 }
 #endif //__AABB_COLLIDER_2D_H_
