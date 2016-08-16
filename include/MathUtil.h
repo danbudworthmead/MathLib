@@ -6,7 +6,7 @@
 
 namespace Maths
 {
-	bool closeEnough(const float left, const float right);
+	bool CloseEnough(const float left, const float right);
 
 	//\===========================================================================================
 	//\	Light Speed in Meters Per Second

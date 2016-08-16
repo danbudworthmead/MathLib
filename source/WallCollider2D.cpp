@@ -27,6 +27,18 @@ namespace Maths
 	void WallCollider2D::UpdateNormal()
 	{
 		normal_ = &Vector2(end_ - start_).PerpCCW();
+		if (CloseEnough(normal_->x, 0))
+			normal_->x = 0;
+		if (CloseEnough(normal_->x, 1))
+			normal_->x = 1;
+		if (CloseEnough(normal_->x, -1))
+			normal_->x = -1;
+		if (CloseEnough(normal_->y, 0))
+			normal_->y = 0;
+		if (CloseEnough(normal_->y, 1))
+			normal_->y = 1;
+		if (CloseEnough(normal_->y, -1))
+			normal_->y = -1;
 	}
 
 	Vector2 WallCollider2D::GetNormal() const
@@ -42,6 +54,15 @@ namespace Maths
 	Vector2 WallCollider2D::GetEnd() const
 	{
 		return end_;
+	}
+
+	void WallCollider2D::Set(Vector2 & a_start, Vector2 & a_end)
+	{
+		start_->x = a_start.x;
+		start_->y = a_start.y;
+		end_->x = a_end.x;
+		end_->y = a_end.y;
+		UpdateNormal();
 	}
 
 	float DistanceToWall(const WallCollider2D& wall, const Vector2& v2)

@@ -28,8 +28,17 @@ namespace Maths
 		//Calculating the halfsize of the collider
 		halfSize_ = size_ * 0.5f;
 
-		//Update the walls
-		UpdateWalls();
+		//Calculating the position of the four corners, we can use the x's and y's of points already calculated to save processor cycles ;)
+		Vector2 botleft = pos_ - halfSize_;
+		Vector2 topleft = Vector2(botleft.x, pos_.y + halfSize_.y);
+		Vector2 topright = Vector2(pos_.x + halfSize_.x, topleft.y);
+		Vector2 botright = Vector2(topright.x, botleft.y);
+
+		//Calculating the four walls
+		left_ = new WallCollider2D(botleft, topleft);
+		top_ = new WallCollider2D(topleft, topright);
+		right_ = new WallCollider2D(topright, botright);
+		bottom_ = new WallCollider2D(botright, botleft);
 
 		//Set the isStatic value
 		isStatic_ = a_isStatic;
@@ -131,10 +140,10 @@ namespace Maths
 		Vector2 botright = Vector2(topright.x, botleft.y);
 
 		//Calculating the four walls
-		left_	= &WallCollider2D(botleft, topleft);
-		top_	= &WallCollider2D(topleft, topright);
-		right_	= &WallCollider2D(topright, botright);
-		bottom_ = &WallCollider2D(botright, botleft);
+		left_->Set(botleft, topleft);
+		top_->Set(topleft, topright);
+		right_->Set(topright, botright);
+		bottom_->Set(botright, botleft);
 	}
 	const char * AABBCollider2D::GetName() const
 	{

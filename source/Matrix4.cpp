@@ -557,17 +557,17 @@ namespace Maths {
 		float c = cos(fAngleRadians);
 		float s = sin(fAngleRadians);
 
-		if (closeEnough(c, 0.f))
+		if (CloseEnough(c, 0.f))
 			c = 0.f;
-		if (closeEnough(c, 1.f))
+		if (CloseEnough(c, 1.f))
 			c = 1.f;
-		if (closeEnough(c, -1.f))
+		if (CloseEnough(c, -1.f))
 			c = -1.f;
-		if (closeEnough(s, 0.f))
+		if (CloseEnough(s, 0.f))
 			s = 0.f;
-		if (closeEnough(s, 1.f))
+		if (CloseEnough(s, 1.f))
 			s = 1.f;
-		if (closeEnough(s, -1.f))
+		if (CloseEnough(s, -1.f))
 			s = -1.f;
 
 		Matrix4 m4;
@@ -584,17 +584,17 @@ namespace Maths {
 		float c = cos(fAngleRadians);
 		float s = sin(fAngleRadians);
 
-		if (closeEnough(c, 0.f))
+		if (CloseEnough(c, 0.f))
 			c = 0.f;
-		if (closeEnough(c, 1.f))
+		if (CloseEnough(c, 1.f))
 			c = 1.f;
-		if (closeEnough(c, -1.f))
+		if (CloseEnough(c, -1.f))
 			c = -1.f;
-		if (closeEnough(s, 0.f))
+		if (CloseEnough(s, 0.f))
 			s = 0.f;
-		if (closeEnough(s, 1.f))
+		if (CloseEnough(s, 1.f))
 			s = 1.f;
-		if (closeEnough(s, -1.f))
+		if (CloseEnough(s, -1.f))
 			s = -1.f;
 
 		Matrix4 m4;
@@ -611,17 +611,17 @@ namespace Maths {
 		float c = cos(fAngleRadians);
 		float s = sin(fAngleRadians);
 
-		if (closeEnough(c, 0.f))
+		if (CloseEnough(c, 0.f))
 			c = 0.f;
-		if (closeEnough(c, 1.f))
+		if (CloseEnough(c, 1.f))
 			c = 1.f;
-		if (closeEnough(c, -1.f))
+		if (CloseEnough(c, -1.f))
 			c = -1.f;
-		if (closeEnough(s, 0.f))
+		if (CloseEnough(s, 0.f))
 			s = 0.f;
-		if (closeEnough(s, 1.f))
+		if (CloseEnough(s, 1.f))
 			s = 1.f;
-		if (closeEnough(s, -1.f))
+		if (CloseEnough(s, -1.f))
 			s = -1.f;
 
 		Matrix4 m4;

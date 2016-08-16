@@ -20,6 +20,8 @@ namespace Maths
 		Vector2 GetStart() const;
 		Vector2 GetEnd() const;
 
+		void Set(Vector2& a_start, Vector2& a_end);
+
 		friend float DistanceToWall(const WallCollider2D& wall, const Vector2& v2);
 	};
 }

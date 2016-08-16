@@ -2,9 +2,9 @@
 #include <cmath>
 namespace Maths 
 {
-	bool closeEnough(const float left, const float right)
+	bool CloseEnough(const float left, const float right)
 	{
-		const float THRESHOLD = 0.000001f;
+		const float THRESHOLD = 0.0001f;
 		if (abs(left - right) <= THRESHOLD)
 			return true;
 		return false;
